@@ -18,11 +18,12 @@ material::material()
 void material::convert_energy_to_wavelength()
 {
 	// convert a bandgap energy expressed in eV to a wavelength expressed in nm
+	// h c / q = 1.24071e-6, multiply by 1000 to express wavelength in nm
 	// R. Sheehan 14 - 6 - 2016
 
 	try {
 		if (energy > 0.0) {
-			wavelength = 1240.0 / energy;
+			wavelength = 1240.71 / energy;
 		}
 		else {
 			std::string reason = "Value stored in energy is not correct\n";
