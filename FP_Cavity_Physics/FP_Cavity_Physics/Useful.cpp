@@ -76,43 +76,51 @@ void useful_funcs::exit_failure_output(std::string reason)
 	}
 }
 
-void useful_funcs::read_into_vector(std::string &filename, std::vector<double> &data, int &n_pts, bool loud)
+bool useful_funcs::valid_filename_length(const std::string &name)
 {
-	// read data from a file into a vector
-	// R. Sheehan 11 - 9 - 2017
+	// Check that a string length is less than the MAX_PATH_LENGTH
+	// This only really applies to windows
 
-	try{
-		std::ifstream the_file; 
-		the_file.open(filename, std::ios_base::in);
-
-		if(the_file.is_open()){
-
-			if(loud) std::cout<<filename<<" opened for reading\n"; 
-
-			double value; 
-			n_pts = 0;
-			while(the_file >> value){
-				data.push_back(value);
-				n_pts++; 
-			}
-
-			if(loud) std::cout<<template_funcs::toString(n_pts)<<" data were read from "<<filename<<"\n"; 
-
-			the_file.close(); 		
-		}
-		else{
-			std::string reason; 
-			reason = "Error: void read_into_vector(std::string &filename, std::vector<double> &data)\n"; 
-			reason += "Cannot open: " + filename + "\n"; 
-			throw std::invalid_argument(reason); 
-		}
-		
-	}
-	catch(std::invalid_argument &e){
-		useful_funcs::exit_failure_output(e.what());
-		exit(EXIT_FAILURE); 
-	}
+	return static_cast<int>(name.length()) < MAX_PATH_LENGTH ? true : false;
 }
+
+//void useful_funcs::read_into_vector(std::string &filename, std::vector<double> &data, int &n_pts, bool loud)
+//{
+//	// read data from a file into a vector
+//	// R. Sheehan 11 - 9 - 2017
+//
+//	try{
+//		std::ifstream the_file; 
+//		the_file.open(filename, std::ios_base::in);
+//
+//		if(the_file.is_open()){
+//
+//			if(loud) std::cout<<filename<<" opened for reading\n"; 
+//
+//			double value; 
+//			n_pts = 0;
+//			while(the_file >> value){
+//				data.push_back(value);
+//				n_pts++; 
+//			}
+//
+//			if(loud) std::cout<<template_funcs::toString(n_pts)<<" data were read from "<<filename<<"\n"; 
+//
+//			the_file.close(); 		
+//		}
+//		else{
+//			std::string reason; 
+//			reason = "Error: void read_into_vector(std::string &filename, std::vector<double> &data)\n"; 
+//			reason += "Cannot open: " + filename + "\n"; 
+//			throw std::invalid_argument(reason); 
+//		}
+//		
+//	}
+//	catch(std::invalid_argument &e){
+//		useful_funcs::exit_failure_output(e.what());
+//		exit(EXIT_FAILURE); 
+//	}
+//}
 
 //double useful_funcs::test_func(double (*f)(int, int), int a, int b)
 //{

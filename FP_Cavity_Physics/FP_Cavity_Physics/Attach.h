@@ -8,7 +8,6 @@
 // Otherwise your program compiling correctly is simply an accident.
 
 #include <cstdlib>
-#include <utility> // pair
 #include <iostream> // cout, cin, cerr
 #include <iomanip> // setw, setprecision, time
 
@@ -46,8 +45,14 @@ static const double ETA = sqrt(MU / EPSILON); // Impedance of free space
 static const bool TE = true; // TE polarisation 
 static const bool TM = false; // TM polarisation
 
+static const int MAX_PATH_LENGTH = 250; // max. length for a directory in Windows OS
+
+static const std::string empty_str = "";
+static const std::string dottxt = ".txt";
+
 #include "Templates.h"
 #include "Useful.h"
+#include "Vector_Utils.h"
 #include "Material_Models.h"
 #include "FP_Model.h"
 
