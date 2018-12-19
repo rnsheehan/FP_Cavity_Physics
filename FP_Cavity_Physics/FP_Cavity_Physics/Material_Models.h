@@ -1,7 +1,8 @@
 #ifndef MATERIAL_MODELS_H
 #define MATERIAL_MODELS_H
 
-// Code that implements a materials class new material classes can be added dynamically
+// Code that implements a materials class
+// new material classes can be added dynamically
 // R. Sheehan 14 - 6 - 2016
 
 // Declaration of base class material
@@ -45,6 +46,228 @@ private:
 	int n_cols;
 	bool data_in_memory;
 	std::vector< std::vector< double > > ri_data;
+};
+
+/****************************************************************************************************************************/
+/*                                         Binaries                                                                         */
+/****************************************************************************************************************************/
+
+// Declaration of derived class GaAs
+
+class GaAs : public material {
+public:
+	GaAs();
+	GaAs(double wavelength);
+
+	double refractive_index();
+
+	double bandgap_energy();
+
+	//double bandgap_energy_with_strain(); 
+
+private:
+
+};
+
+// Declaration of derived class AlAs
+
+class AlAs : public material {
+public:
+	AlAs();
+	AlAs(double wavelength);
+
+	double refractive_index();
+
+	double bandgap_energy();
+
+private:
+
+};
+
+// Declaration of derived class SiO2
+
+class SiO2 : public material {
+public:
+	SiO2();
+	SiO2(double wavelength);
+
+	double refractive_index();
+
+	double bandgap_energy();
+
+private:
+
+};
+
+// Declaration of derived class AlN
+
+class AlN : public material {
+public:
+	AlN();
+	AlN(double wavelength);
+
+	double refractive_index();
+
+	double bandgap_energy();
+
+private:
+
+};
+
+// Declaration of derived class AlSb
+
+class AlSb : public material {
+public:
+	AlSb();
+	AlSb(double wavelength);
+
+	double refractive_index();
+
+	double bandgap_energy();
+
+private:
+
+};
+
+// Declaration of derived class GaN
+
+class GaN : public material {
+public:
+	GaN();
+	GaN(double wavelength);
+
+	double refractive_index();
+
+	double bandgap_energy();
+
+private:
+
+};
+
+// Declaration of derived class GaSb
+
+class GaSb : public material {
+public:
+	GaSb();
+	GaSb(double wavelength);
+
+	double refractive_index();
+
+	double bandgap_energy();
+
+private:
+
+};
+
+// Declaration of derived class InP
+
+class InP : public material {
+public:
+	InP();
+	InP(double wavelength);
+
+	double refractive_index();
+
+	double bandgap_energy();
+
+private:
+
+};
+
+// Declaration of derived class InAs
+
+class InAs : public material {
+public:
+	InAs();
+	InAs(double wavelength);
+
+	double refractive_index();
+
+	double bandgap_energy();
+
+private:
+
+};
+
+/****************************************************************************************************************************/
+/*                                         Ternaries                                                                        */
+/****************************************************************************************************************************/
+
+// Declaration of derived class AlGaAs
+
+class AlGaAs : public material {
+public:
+	AlGaAs();
+	AlGaAs(double wavelength);
+
+	double refractive_index(double alfrac);
+
+	double bandgap_energy(double alfrac);
+
+private:
+
+};
+
+// Declaration of derived class AlInAs
+
+class AlInAs : public material {
+public:
+	AlInAs();
+	AlInAs(double wavelength);
+
+	double refractive_index(double alfrac);
+
+	double bandgap_energy(double alfrac);
+
+private:
+
+};
+
+// Declaration of derived class InGaAs
+
+class InGaAs : public material {
+public:
+	InGaAs();
+	InGaAs(double wavelength);
+
+	double refractive_index(double infrac);
+
+	double bandgap_energy(double infrac);
+
+private:
+
+};
+
+/****************************************************************************************************************************/
+/*                                         Quaternaries                                                                     */
+/****************************************************************************************************************************/
+
+// Declaration of derived class InGaAsP
+class InGaAsP : public material {
+public:
+	InGaAsP();
+	InGaAsP(double wavelength);
+
+	double refractive_index(double asfrac);
+
+	double bandgap_energy(double asfrac);
+
+private:
+
+};
+
+// Declaration of derived class AlInGaAs
+class AlInGaAs : public material {
+public:
+	AlInGaAs();
+	AlInGaAs(double wavelength);
+
+	double refractive_index(double asfrac);
+
+	double bandgap_energy(double asfrac);
+
+private:
+
 };
 
 #endif

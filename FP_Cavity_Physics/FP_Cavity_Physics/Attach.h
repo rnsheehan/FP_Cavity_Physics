@@ -41,6 +41,7 @@ static const double SPEED_OF_LIGHT = (3.0e14); // Speed of light in microns per 
 static const double EPSILON = (8.85e-18); // Permittivity of free space in Farads per micron
 static const double MU = (12.566e-13); // Permeability of free space in Henrys per micron
 static const double ETA = sqrt(MU / EPSILON); // Impedance of free space
+static const double HC = 1.23984193; // hc = Planck's Constant multiplied by Speed of light expressed in units of [ eV um ] 
 
 static const bool TE = true; // TE polarisation 
 static const bool TM = false; // TM polarisation
