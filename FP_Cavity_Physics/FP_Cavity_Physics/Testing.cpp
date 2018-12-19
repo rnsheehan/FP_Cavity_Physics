@@ -9,8 +9,8 @@ void testing::matrix_file_IO()
 
 	std::string filename;
 
-	//filename = "Ag.txt";
-	filename = "Silicon_Refractive_Index_Data.csv";
+	filename = "Ag.txt";
+	//filename = "Silicon_Refractive_Index_Data.csv";
 
 	int nc, nr;
 	std::vector<std::vector<double>> data;
@@ -23,7 +23,7 @@ void testing::matrix_file_IO()
 
 	double x, y, dy; 
 
-	x = 1.567; 
+	x = 1567; 
 
 	interpolation::polint(xa, ya, x, y, dy); 
 
