@@ -105,20 +105,6 @@ void vecut::read_into_matrix(std::string &filename, std::vector<std::vector<doub
 					data[k].resize(n_cols, 0.0); 
 				}
 
-<<<<<<< HEAD
-				the_file.seekg(has_header ? 1 : 0, std::ios::beg); // move to the start of the file
-
-				i = 0;
-				while (std::getline(the_file, line, endline)) {
-					std::istringstream linestream(line);
-					j = 0;
-					while (std::getline(linestream, item, sep_token)) {
-						data[i][j] = atof(item.c_str());
-						j++;
-					}
-					i++;
-				}
-=======
 				the_file.clear(); // empty a buffer?
 				the_file.seekg(has_header ? 1 : 0, std::ios::beg); // move to the start of the file
 
@@ -134,9 +120,6 @@ void vecut::read_into_matrix(std::string &filename, std::vector<std::vector<doub
 					}
 					i++;
 				}
-
-				the_file.close();
->>>>>>> 32623e9232915d9d72f07d65e801b123923621aa
 
 				the_file.close(); 
 			}
