@@ -2,6 +2,67 @@
 #include "Attach.h"
 #endif
 
+std::vector<double> vecut::get_row(std::vector<std::vector<double>> &data, int r_num)
+{
+	// extract a row of data from an existing 2D array
+
+	try {
+		bool c1 = !data.empty() ? true : false; 
+		bool c2 = r_num > -1 && r_num < (int)(data.size()) ? true : false; 
+		bool c3 = c1 && c2 ? true : false; 
+
+		if (c3) {
+			return data[r_num]; 
+		}
+		else {
+			return std::vector<double>(); 
+			std::string reason; 
+			reason = "Error: std::vector<double> get_row(std::vector<std::vector<double>> &data, int r_num)\n"; 
+			if (!c1) reason += "input array not defined\n"; 
+			if (!c2) reason += "attempting to access beyond bounds of array\n"; 
+			throw std::invalid_argument(reason); 
+		}
+	}
+	catch (std::invalid_argument &e) {
+		useful_funcs::exit_failure_output(e.what());
+		exit(EXIT_FAILURE);
+	}
+}
+
+std::vector<double> vecut::get_col(std::vector<std::vector<double>> &data, int c_num)
+{
+	// extract a column of data from an existing 2D array
+
+	try {
+		bool c1 = !data.empty() ? true : false;
+		bool c2 = c_num > -1 && c_num < (int)(data[0].size()) ? true : false;
+		bool c3 = c1 && c2 ? true : false;
+
+		if (c3) {
+			//int n_rows = (int)(data.size());
+			std::vector<double> data_col(data.size());
+
+			for (size_t i = 0; i < data.size(); i++) {
+				data_col[i] = data[i][c_num]; 
+			}
+
+			return data_col; 
+		}
+		else {
+			return std::vector<double>();
+			std::string reason;
+			reason = "Error: std::vector<double> get_col(std::vector<std::vector<double>> &data, int c_num)\n";
+			if (!c1) reason += "input array not defined\n";
+			if (!c2) reason += "attempting to access beyond bounds of array\n";
+			throw std::invalid_argument(reason);
+		}
+	}
+	catch (std::invalid_argument &e) {
+		useful_funcs::exit_failure_output(e.what());
+		exit(EXIT_FAILURE);
+	}
+}
+
 void vecut::read_into_vector(std::string &filename, std::vector<double> &data, int &n_pts, bool loud)
 {
 	// read a single column of data from a file into a vector
@@ -105,7 +166,7 @@ void vecut::read_into_matrix(std::string &filename, std::vector<std::vector<doub
 					data[k].resize(n_cols, 0.0); 
 				}
 
-				the_file.clear(); // empty a buffer?
+				the_file.clear(); // empty a buffer, needed to ensure data can be read from the file
 				the_file.seekg(has_header ? 1 : 0, std::ios::beg); // move to the start of the file
 
 				int i, j;
@@ -137,7 +198,6 @@ void vecut::read_into_matrix(std::string &filename, std::vector<std::vector<doub
 			reason += "Cannot open: " + filename + "\n";
 			throw std::invalid_argument(reason);
 		}
-
 	}
 	catch (std::invalid_argument &e) {
 		useful_funcs::exit_failure_output(e.what());

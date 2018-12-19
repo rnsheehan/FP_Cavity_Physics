@@ -118,7 +118,9 @@
     <ClInclude Include="Attach.h" />
     <ClInclude Include="FP_Model.h" />
     <ClInclude Include="Material_Models.h" />
+    <ClInclude Include="Neville.h" />
     <ClInclude Include="Templates.h" />
+    <ClInclude Include="Testing.h" />
     <ClInclude Include="Useful.h" />
     <ClInclude Include="Vector_Utils.h" />
   </ItemGroup>
@@ -126,6 +128,8 @@
     <ClCompile Include="FP_Model.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Material_Models.cpp" />
+    <ClCompile Include="Neville.cpp" />
+    <ClCompile Include="Testing.cpp" />
     <ClCompile Include="Useful.cpp" />
     <ClCompile Include="Vector_Utils.cpp" />
   </ItemGroup>
