@@ -58,7 +58,6 @@ void vecut::read_into_matrix(std::string &filename, std::vector<std::vector<doub
 
 			if (!data.empty()) data.clear(); // make sure that data is empty when values are being read in
 
-			int i, j;
 			bool has_header = false; 
 			std::string line, item;
 
@@ -102,10 +101,11 @@ void vecut::read_into_matrix(std::string &filename, std::vector<std::vector<doub
 			if (n_rows > 1 && n_cols > 0) {
 				// Allocate the memory required to store the data
 				data.resize(n_rows);
-				for (size_t i = 0; i < data.size(); i++) {
-					data[i].resize(n_cols, 0.0); 
+				for (size_t k = 0; k < data.size(); k++) {
+					data[k].resize(n_cols, 0.0); 
 				}
 
+<<<<<<< HEAD
 				the_file.seekg(has_header ? 1 : 0, std::ios::beg); // move to the start of the file
 
 				i = 0;
@@ -118,6 +118,25 @@ void vecut::read_into_matrix(std::string &filename, std::vector<std::vector<doub
 					}
 					i++;
 				}
+=======
+				the_file.clear(); // empty a buffer?
+				the_file.seekg(has_header ? 1 : 0, std::ios::beg); // move to the start of the file
+
+				int i, j;
+				
+				i = 0;
+				while (std::getline(the_file, line, endline)) {
+					std::istringstream linestream(line);
+					j = 0;
+					while (std::getline(linestream, item, sep_token)) {
+						data[i][j] = atof(item.c_str());
+						j++;
+					}
+					i++;
+				}
+
+				the_file.close();
+>>>>>>> 32623e9232915d9d72f07d65e801b123923621aa
 
 				the_file.close(); 
 			}
