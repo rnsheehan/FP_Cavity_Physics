@@ -4,7 +4,9 @@
 
 int main()
 {
-	testing::matrix_file_IO(); 
+	//testing::matrix_file_IO(); 
+
+	testing::material_values(); 
 
 	std::cout << "Press enter to close.\n";
 	std::cin.get();

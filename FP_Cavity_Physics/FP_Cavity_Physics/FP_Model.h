@@ -12,11 +12,16 @@ public:
 	fp_cavity();
 
 private:
-	int material; // this will describe the spectrally sensitive refractive index of the cavity
+	int inside_mat; // this will describe the spectrally sensitive refractive index inside the cavity
+	int outside_mat; // this will describe the spectrally sensitive refractive index outside the cavity
 
 	double length; // total length of FP cavity
 	double R1; // reflectivity mirror 1
 	double R2; // reflectivity mirror 2
+	double phase; // optical phase inside the cavity
+	double alpha; // intensity loss coefficient (gain if alpha < 0)
+
+
 };
 
 #endif

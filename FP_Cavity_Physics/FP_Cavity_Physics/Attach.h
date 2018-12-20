@@ -56,6 +56,7 @@ static const std::string dottxt = ".txt";
 #include "Vector_Utils.h"
 #include "Neville.h"
 #include "Material_Models.h"
+#include "Fresnel_Eqn.h"
 #include "FP_Model.h"
 #include "Testing.h"
 

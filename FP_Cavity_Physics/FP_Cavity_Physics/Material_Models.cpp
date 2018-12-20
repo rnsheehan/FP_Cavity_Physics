@@ -142,6 +142,8 @@ double material::data_based_ri(std::string &filename)
 			std::vector<double> waves = vecut::get_col(ri_data, 0);
 			std::vector<double> rindexes = vecut::get_col(ri_data, 1);
 
+			wavelength *= 1000.0; // convert wavelength from units of um to units of nm
+
 			interpolation::polint(waves, rindexes, wavelength, ri_val, delta_ri_val);
 
 			return ri_val;			
@@ -155,6 +157,85 @@ double material::data_based_ri(std::string &filename)
 		}
 	}
 	catch (std::invalid_argument &e) {
+		useful_funcs::exit_failure_output(e.what());
+		exit(EXIT_FAILURE);
+	}
+}
+
+/****************************************************************************************************************************/
+/*                                         Elements                                                                         */
+/****************************************************************************************************************************/
+
+// Definition of class Si
+Si::Si()
+{
+	// Default Constructor
+}
+
+Si::Si(double wavelength)
+{
+	set_wavelength(wavelength);
+}
+
+double Si::refractive_index()
+{
+	// source: https://www.filmetrics.com/refractive-index-database/Si/Silicon
+	// type: fit of experimental data
+	// model valid for at least lambda (um) in [0.197, 2.5]
+
+	try {
+		// Model is only valid on certain wavelength range
+
+		if (wavelength > 0.197 && wavelength < 2.5) {
+
+			std::string ri_file = "RI_Data\\Si.txt";
+
+			double ret_val = data_based_ri(ri_file);
+
+			return ret_val;
+		}
+		else {
+			std::string reason;
+			reason = "Attempting to compute RI outside of allowed range in Si::refractive_index()\n";
+			reason += "wavelength = " + template_funcs::toString(wavelength, 3) + " (um)\n";
+			reason += "Allowed range for GaAs model is [ 0.197, 2.5 ]\n";
+			throw std::range_error(reason);
+		}
+	}
+	catch (std::range_error &e) {
+		useful_funcs::exit_failure_output(e.what());
+		exit(EXIT_FAILURE);
+	}
+}
+
+double Si::bandgap_energy()
+{
+	// model for the band-gap energy of the material Si
+	// source: http://www.ioffe.ru/SVA/NSM/Semicond/Si/index.html
+	// energy is expressed in eV, model valid for T in [0, 700] Kelvin
+
+	try {
+		// Model is only valid on certain temperature range
+
+		if (get_temperature() > 0.0 && get_temperature() < 700.0) {
+
+			double c1 = 1.17;
+			double c2 = 4.73e-4;
+			double c3 = 636.0;
+			double t1 = c2 * template_funcs::DSQR(get_temperature());
+			double t2 = (get_temperature() + c3);
+
+			return (c1 - (t1 / t2));
+		}
+		else {
+			std::string reason;
+			reason = "Attempting to compute Eg outside of allowed range in Si::bandgap_energy()\n";
+			reason += "temperature = " + template_funcs::toString(get_temperature(), 3) + " (um)\n";
+			reason += "Allowed range for Si model is [ 0, 700 ]\n";
+			throw std::range_error(reason);
+		}
+	}
+	catch (std::range_error &e) {
 		useful_funcs::exit_failure_output(e.what());
 		exit(EXIT_FAILURE);
 	}

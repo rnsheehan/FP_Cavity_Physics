@@ -13,9 +13,8 @@ public:
 
 	// Declare pure virtual functions that will enable declaration of methods for RI and Eg
 	// every class that inherits material must have an implementation of each of these functions
-	//virtual double refractive_index(void)=0; 
-	//virtual double bandgap_energy(void)=0;
-	//virtual double bandgap_energy_with_strain(void)=0; 
+	virtual double refractive_index(void)=0; 
+	virtual double bandgap_energy(void)=0;
 
 	inline double get_wavelength() { return wavelength; }
 	inline double get_energy() { return energy; }
@@ -46,6 +45,25 @@ private:
 	int n_cols;
 	bool data_in_memory;
 	std::vector< std::vector< double > > ri_data;
+};
+
+/****************************************************************************************************************************/
+/*                                         Elements                                                                         */
+/****************************************************************************************************************************/
+
+class Si : public material {
+public:
+	Si();
+	Si(double wavelength);
+
+	double refractive_index();
+
+	double bandgap_energy();
+
+	//double bandgap_energy_with_strain(); 
+
+private:
+
 };
 
 /****************************************************************************************************************************/
@@ -269,5 +287,8 @@ public:
 private:
 
 };
+
+// Is there a way to access all these classes in a general way?
+// Can you do this with abstract classes and virtual functions?
 
 #endif

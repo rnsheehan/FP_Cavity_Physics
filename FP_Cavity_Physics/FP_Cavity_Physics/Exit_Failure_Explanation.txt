@@ -1,0 +1,7 @@
+Program Exit Explanation
+
+Error occurred: Thu Dec 20 14:21:05 2018
+
+Error: void read_into_matrix(std::string &filename, std::vector<std::vector<double>> &data, int &n_rows, int &n_cols, bool loud = false)
+Cannot open: Si.txt
+

@@ -5,5 +5,7 @@
 fp_cavity::fp_cavity()
 {
 	// Default Constructor
-	length = 0.0; 
+	inside_mat = outside_mat = 0; 
+
+	length = alpha = R1 = R2 = phase = 0.0; 
 }
