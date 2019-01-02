@@ -36,7 +36,7 @@ void fresnel::set_params(double lambda, material *m1, material *m2)
 				std::string reason;
 				reason = "Error: fresnel::set_params(double lambda, material *m1, material *m2)\n";
 				reason += "n2: " + template_funcs::toString(n2) + " is not positive\n";
-				throw std::runtime_error(reason);
+				throw std::invalid_argument(reason);
 			}
 		}
 		else {
@@ -49,9 +49,6 @@ void fresnel::set_params(double lambda, material *m1, material *m2)
 	catch (std::invalid_argument &e) {
 		useful_funcs::exit_failure_output(e.what());
 		exit(EXIT_FAILURE); 
-	}
-	catch (std::runtime_error &e) {
-		std::cerr << e.what(); 
 	}
 }
 
