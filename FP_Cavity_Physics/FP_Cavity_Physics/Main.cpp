@@ -10,6 +10,8 @@ int main()
 
 	testing::fresnel_values(); 
 
+	testing::fp_test(); 
+
 	std::cout << "Press enter to close.\n";
 	std::cin.get();
 

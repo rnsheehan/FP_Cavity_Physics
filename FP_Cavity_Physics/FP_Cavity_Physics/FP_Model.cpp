@@ -73,7 +73,11 @@ void fp_cavity::dispersion(double wavelength)
 
 			rpr = calc.ref_coeff(angle, TE);
 
-			R = sqrt(r*rpr); // Cavity Reflectance
+			R = r*rpr; // Cavity Reflectance
+
+			std::cout << "n1: " << n1 << " , n2: " << n2 << "\n"; 
+
+			std::cout << wavelength << " , " << r << " , " << rpr << " , " << R << "\n"; 
 		}
 		else {
 			std::string reason;

@@ -10,6 +10,8 @@ namespace testing {
 	void material_values(); 
 
 	void fresnel_values(); 
+
+	void fp_test(); 
 }
 
 #endif

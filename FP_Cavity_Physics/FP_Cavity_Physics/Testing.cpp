@@ -74,11 +74,11 @@ void testing::fresnel_values()
 
 	// Declarate some material objects
 
-	/*Air smpl1;
-	SiO2 smpl2;*/
+	Air smpl1;
+	SiO2 smpl2;
 
-	InP smpl2; 
-	AlN smpl1; 
+	/*InP smpl2; 
+	AlN smpl1;*/ 
 
 	/*material *mat1;
 	material *mat2;
@@ -100,10 +100,34 @@ void testing::fresnel_values()
 	std::cout << "Critical angle: " << calc.get_critical_angle()<<" rad, "<< calc.get_critical_angle()*RAD_TO_DEG << " deg\n";
 	std::cout << "Brewster angle: " << calc.get_brewster_angle() << " rad, " << calc.get_brewster_angle()*RAD_TO_DEG << " deg\n\n";
 
-	double angle = 45*DEG_TO_RAD; 
+	double angle = 0.0*DEG_TO_RAD; 
 
 	std::cout << "Angle of incidence: " << angle << " rad, "<< angle * RAD_TO_DEG<<" deg\n";
 	std::cout << "Angle of transmission: " << calc.transmission_angle(angle) << " rad, " << calc.transmission_angle(angle)*RAD_TO_DEG << " deg\n"; 
 	std::cout << "TE reflectance: " << calc.reflectance(angle, TE) << ", TE transmittance: " << calc.transmittance(angle, TE) <<"\n";
 	std::cout << "TM reflectance: " << calc.reflectance(angle, TM) << ", TM transmittance: "<< calc.transmittance(angle, TM) << "\n\n";
+}
+
+void testing::fp_test()
+{
+	// start testing the FP cavity implementation
+
+	double incident_angle, cav_length, loss_fac, wl_start, wl_end;
+
+	incident_angle = 0.0; cav_length = 100; loss_fac = 0.0; wl_start = 1.0; wl_end = 2.0; 
+
+	/*InP smpl2;
+	AlN smpl1;*/
+
+	Air smpl1;
+	SiO2 smpl2;
+
+	material *mat1;
+	material *mat2;
+
+	mat1 = &smpl1; mat2 = &smpl2;
+
+	fp_cavity etalon(incident_angle, cav_length, loss_fac, wl_start, wl_end, mat1, mat2);
+
+	etalon.dispersion(1.55); 
 }
