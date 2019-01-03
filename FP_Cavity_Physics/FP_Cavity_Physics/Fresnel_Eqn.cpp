@@ -145,9 +145,9 @@ double fresnel::transmission_angle(double angle)
 	}
 }
 
-double fresnel::reflectance(double angle, bool polarisation)
+double fresnel::ref_coeff(double angle, bool polarisation)
 {
-	// compute the power reflection for a given polarisation and angle of incidence
+	// compute the reflection coefficient for a given polarisation and angle of incidence
 	// angle should be input in units of radians
 	// See Fowles, section 2.7, eqns 2.58 and 2.59, page 44
 
@@ -155,24 +155,24 @@ double fresnel::reflectance(double angle, bool polarisation)
 		bool c1 = angle >= 0.0 ? true : false;
 		bool c2 = wavelength > 0.0 ? true : false;
 		bool c3 = nrat > 0.0 ? true : false;
-		bool c4 = angle < theta_critical ? true : false; 
-		bool c9 = c1 && c2 && c3 && c4 ? true : false; 
+		bool c4 = angle < theta_critical ? true : false;
+		bool c9 = c1 && c2 && c3 && c4 ? true : false;
 
 		if (c9) {
-			double cangle = cos(angle); 
-			double sangle = sin(angle); 
-			double t1 = polarisation == TE ? cangle : nrat_sqr*cangle;
-			double t2 = sqrt( nrat_sqr - template_funcs::DSQR(sangle) );
-			double numer = polarisation == TE ? t1 - t2 : t2 - t1; 
-			double denom = t1 + t2; 
+			double cangle = cos(angle);
+			double sangle = sin(angle);
+			double t1 = polarisation == TE ? cangle : nrat_sqr * cangle;
+			double t2 = sqrt(nrat_sqr - template_funcs::DSQR(sangle));
+			double numer = polarisation == TE ? t1 - t2 : t2 - t1;
+			double denom = t1 + t2;
 			if (fabs(denom) > 0.0) {
-				return template_funcs::DSQR(numer / denom); 
+				return (numer / denom); 
 			}
 			else {
 				return 0.0; // nrat > 1 => external reflection, nrat < 1 => internal reflection 
-				std::string reason = "Error: double fresnel::reflectance(double angle, bool polarisation)\n"; 
-				reason += "Attempt to divide by zero\n"; 
-				throw std::runtime_error(reason); 
+				std::string reason = "Error: double fresnel::ref_coeff(double angle, bool polarisation)\n";
+				reason += "Attempt to divide by zero\n";
+				throw std::runtime_error(reason);
 			}
 		}
 		else {
@@ -181,9 +181,9 @@ double fresnel::reflectance(double angle, bool polarisation)
 				return 1.0; // nrat > 1 => external reflection, nrat < 1 => internal reflection 
 			}
 			else {
-				return 0.0; 
+				return 0.0;
 				std::string reason;
-				reason = "Error: double fresnel::reflectance(double angle, bool polarisation)\n";
+				reason = "Error: double fresnel::ref_coeff(double angle, bool polarisation)\n";
 				if (!c1) reason += "Angle of incidence not defined correctly\n";
 				if (!c2) reason += "Operating wavelength is not defined\n";
 				if (!c3) reason += "RI ratio is not defined\n";
@@ -196,8 +196,13 @@ double fresnel::reflectance(double angle, bool polarisation)
 		exit(EXIT_FAILURE);
 	}
 	catch (std::runtime_error &e) {
-		std::cerr << e.what(); 
+		std::cerr << e.what();
 	}
+}
+
+double fresnel::reflectance(double angle, bool polarisation)
+{
+	return template_funcs::DSQR(ref_coeff(angle, polarisation)); 
 }
 
 double fresnel::transmittance(double angle, bool polarisation)

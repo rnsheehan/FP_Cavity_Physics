@@ -16,6 +16,7 @@ public:
 	void set_params(double lambda, double indx_1, double indx_2);
 	
 	double transmission_angle(double angle); 
+	double ref_coeff(double angle, bool polarisation);
 	double reflectance(double angle, bool polarisation); 
 	double transmittance(double angle, bool polarisation);
 

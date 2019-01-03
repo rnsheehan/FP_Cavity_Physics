@@ -73,17 +73,17 @@ void testing::fresnel_values()
 	double wavelength = 1.55;
 
 	// Declarate some material objects
-	material *mat1;
-	material *mat2;
 
 	/*Air smpl1;
 	SiO2 smpl2;*/
 
-	InP smpl1; 
-	AlN smpl2; 
+	InP smpl2; 
+	AlN smpl1; 
 
-	/*mat1 = &smpl1;
-	mat2 = &smpl2;
+	/*material *mat1;
+	material *mat2;
+
+	mat1 = &smpl1; mat2 = &smpl2;
 
 	mat1->set_wavelength(wavelength);
 	mat2->set_wavelength(wavelength);*/
