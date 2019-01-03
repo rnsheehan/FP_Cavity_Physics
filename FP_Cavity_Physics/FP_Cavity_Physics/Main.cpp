@@ -8,6 +8,8 @@ int main()
 
 	testing::material_values(); 
 
+	//testing::fresnel_values(); 
+
 	std::cout << "Press enter to close.\n";
 	std::cin.get();
 

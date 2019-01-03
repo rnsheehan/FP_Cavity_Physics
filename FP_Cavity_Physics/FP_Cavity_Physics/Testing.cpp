@@ -43,8 +43,10 @@ void testing::material_values()
 	Si smpl1; 
 	SiO2 smpl2; 
 
+	InGaAs smpl3;
+
 	mat1 = &smpl1; 
-	mat2 = &smpl2; 
+	mat2 = &smpl3; 
 
 	double wavelength = 1.55; 
 
@@ -54,6 +56,51 @@ void testing::material_values()
 	std::cout<<mat1->refractive_index()<<"\n"; // this should return the RI of Si
 
 	smpl1.set_wavelength(wavelength);
-	std::cout << smpl1.refractive_index() << "\n";
+	std::cout << smpl1.refractive_index() << "\n\n";
 
+	std::cout << mat2->refractive_index() << "\n"; // this should return the RI of SiO2
+	std::cout << mat2->refractive_index(0.5) << "\n"; 
+
+	smpl2.set_wavelength(wavelength);
+	std::cout << smpl2.refractive_index() << "\n";
+
+}
+
+void testing::fresnel_values()
+{
+	// run some tests on the Fresnel equations
+
+	// Declarate some material objects
+	material *mat1;
+	material *mat2;
+
+	//Air smpl1;
+	//SiO2 smpl2;
+
+	InP smpl1; 
+	AlN smpl2; 
+
+	mat1 = &smpl1;
+	mat2 = &smpl2;
+
+	double wavelength = 1.55;
+
+	mat1->set_wavelength(wavelength);
+	mat2->set_wavelength(wavelength);
+
+	fresnel calc; 
+
+	calc.set_params(wavelength, mat1, mat2); 
+
+	std::cout << "n1: " << calc.get_n1() << "\nn2: " << calc.get_n2() << "\n"; 
+	std::cout << "RI ratio: " << calc.get_n_ratio() << "\n";
+	std::cout << "Critical angle: " << calc.get_critical_angle()<<" rad, "<< calc.get_critical_angle()*RAD_TO_DEG << " deg\n";
+	std::cout << "Brewster angle: " << calc.get_brewster_angle() << " rad, " << calc.get_brewster_angle()*RAD_TO_DEG << " deg\n\n";
+
+	double angle = 27.0*DEG_TO_RAD; 
+
+	std::cout << "Angle of incidence: " << angle << " rad, "<< angle * RAD_TO_DEG<<" deg\n";
+	std::cout << "Angle of transmission: " << calc.transmission_angle(angle) << " rad, " << calc.transmission_angle(angle)*RAD_TO_DEG << " deg\n"; 
+	std::cout << "TE reflectance: " << calc.reflectance(angle, TE) << ", TE transmittance: " << calc.transmittance(angle, TE) <<"\n";
+	std::cout << "TM reflectance: " << calc.reflectance(angle, TM) << ", TM transmittance: "<< calc.transmittance(angle, TM) << "\n";
 }

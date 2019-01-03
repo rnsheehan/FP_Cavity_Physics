@@ -1,7 +1,8 @@
 Program Exit Explanation
 
-Error occurred: Thu Dec 20 14:21:05 2018
+Error occurred: Thu Jan  3 11:55:07 2019
 
-Error: void read_into_matrix(std::string &filename, std::vector<std::vector<double>> &data, int &n_rows, int &n_cols, bool loud = false)
-Cannot open: Si.txt
+Attempting to compute RI outside of allowed range in InGaAs::refractive_index()
+wavelength = 1.550 (um)
+Allowed range for GaAs model is [ 1.15, 2.0 ]
 

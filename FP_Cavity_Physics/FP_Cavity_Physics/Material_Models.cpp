@@ -162,9 +162,61 @@ double material::data_based_ri(std::string &filename)
 	}
 }
 
+double material::refractive_index(double)
+{
+	// implementation of non-pure virtual function to ensure access to derived class member functions
+	return 0.0; 
+}
+
+double material::bandgap_energy(double)
+{
+	// implementation of non-pure virtual function to ensure access to derived class member functions
+	return 0.0;
+}
+
 /****************************************************************************************************************************/
 /*                                         Elements                                                                         */
 /****************************************************************************************************************************/
+
+// Definition of class Air
+Air::Air()
+{
+	// Default Constructor
+}
+
+Air::Air(double wavelength)
+{
+	set_wavelength(wavelength);
+}
+
+double Air::refractive_index()
+{
+	// refractive index of air is 1.0 for all practical purposes
+	// However, more exact measurements show that n_{air} varies at the 10^{-4} level for \lambda < 1 um
+	// source: https://refractiveindex.info/?shelf=other&book=air&page=Ciddor
+
+	try {
+		return 1.0; 
+	}
+	catch (std::range_error &e) {
+		useful_funcs::exit_failure_output(e.what());
+		exit(EXIT_FAILURE);
+	}
+}
+
+double Air::bandgap_energy()
+{
+	// this is only in place to make it consistent with existing code
+	// air is not a semiconductor, therefore, it does not have a bandgap
+	
+	try {
+		return 0.0; 
+	}
+	catch (std::range_error &e) {
+		useful_funcs::exit_failure_output(e.what());
+		exit(EXIT_FAILURE);
+	}
+}
 
 // Definition of class Si
 Si::Si()
@@ -523,7 +575,7 @@ double AlN::refractive_index()
 
 		if (wavelength > 0.0 && wavelength < 3.0) {
 
-			std::string ri_file = "AlN.txt";
+			std::string ri_file = "RI_Data\\AlN.txt";
 
 			double ret_val = data_based_ri(ri_file);
 
@@ -590,7 +642,7 @@ double AlSb::refractive_index()
 
 		if (wavelength > 0.0 && wavelength < 3.0) {
 
-			std::string ri_file = "AlSb.txt";
+			std::string ri_file = "RI_Data\\AlSb.txt";
 
 			double ret_val = data_based_ri(ri_file);
 
@@ -657,7 +709,7 @@ double GaN::refractive_index()
 
 		if (wavelength > 0.0 && wavelength < 3.0) {
 
-			std::string ri_file = "GaN.txt";
+			std::string ri_file = "RI_Data\\GaN.txt";
 
 			double ret_val = data_based_ri(ri_file);
 
@@ -723,7 +775,7 @@ double GaSb::refractive_index()
 
 		if (wavelength > 0.0 && wavelength < 3.0) {
 
-			std::string ri_file = "GaSb.txt";
+			std::string ri_file = "RI_Data\\GaSb.txt";
 
 			double ret_val = data_based_ri(ri_file);
 
@@ -789,7 +841,7 @@ double InP::refractive_index()
 
 		if (wavelength > 0.0 && wavelength < 3.0) {
 
-			std::string ri_file = "InP.txt";
+			std::string ri_file = "RI_Data\\InP.txt";
 
 			double ret_val = data_based_ri(ri_file);
 
@@ -855,7 +907,7 @@ double InAs::refractive_index()
 
 		if (wavelength > 0.0 && wavelength < 3.0) {
 
-			std::string ri_file = "InAs.txt";
+			std::string ri_file = "RI_Data\\InAs.txt";
 
 			double ret_val = data_based_ri(ri_file);
 
@@ -913,6 +965,16 @@ AlGaAs::AlGaAs()
 AlGaAs::AlGaAs(double wavelength)
 {
 	set_wavelength(wavelength);
+}
+
+double AlGaAs::refractive_index()
+{
+	return 0.0;
+}
+
+double AlGaAs::bandgap_energy()
+{
+	return 0.0;
 }
 
 double AlGaAs::refractive_index(double alfrac)
@@ -1012,9 +1074,21 @@ AlInAs::AlInAs(double wavelength)
 	set_wavelength(wavelength);
 }
 
+double AlInAs::refractive_index()
+{
+	return 0.0;
+}
+
+double AlInAs::bandgap_energy()
+{
+	return 0.0;
+}
+
 double AlInAs::refractive_index(double alfrac)
 {
-	// no model available yet
+	// source: https://www.ece.ucsb.edu/uoeg/publications/papers/J109A.pdf, 1992 probably most accurate
+	// paywalled source: https://www.sciencedirect.com/science/article/pii/016943329290090K, 1991
+	// paywalled source: https://aip.scitation.org/doi/pdf/10.1063/1.340267?class=pdf, 1988
 
 	try {
 		// Model is only valid on certain wavelength range
@@ -1078,6 +1152,16 @@ InGaAs::InGaAs()
 InGaAs::InGaAs(double wavelength)
 {
 	set_wavelength(wavelength);
+}
+
+double InGaAs::refractive_index()
+{
+	return 0.0;
+}
+
+double InGaAs::bandgap_energy()
+{
+	return 0.0;
 }
 
 double InGaAs::refractive_index(double infrac)
@@ -1168,6 +1252,16 @@ InGaAsP::InGaAsP()
 InGaAsP::InGaAsP(double wavelength)
 {
 	set_wavelength(wavelength);
+}
+
+double InGaAsP::refractive_index()
+{
+	return 0.0;
+}
+
+double InGaAsP::bandgap_energy()
+{
+	return 0.0;
 }
 
 double InGaAsP::refractive_index(double asfrac)
@@ -1261,6 +1355,16 @@ AlInGaAs::AlInGaAs()
 AlInGaAs::AlInGaAs(double wavelength)
 {
 	set_wavelength(wavelength);
+}
+
+double AlInGaAs::refractive_index()
+{
+	return 0.0; 
+}
+
+double AlInGaAs::bandgap_energy()
+{
+	return 0.0;
 }
 
 double AlInGaAs::refractive_index(double alfrac)

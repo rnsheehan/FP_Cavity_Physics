@@ -16,6 +16,10 @@ public:
 	virtual double refractive_index(void)=0; 
 	virtual double bandgap_energy(void)=0;
 
+	// Need to have non-pure virtual functions that can take a parameter
+	virtual double refractive_index(double); 
+	virtual double bandgap_energy(double);
+
 	inline double get_wavelength() { return wavelength; }
 	inline double get_energy() { return energy; }
 	inline double get_temperature() { return temperature; }
@@ -51,6 +55,23 @@ private:
 /*                                         Elements                                                                         */
 /****************************************************************************************************************************/
 
+// Declaration of derived class Air
+
+class Air : public material {
+public:
+	Air();
+	Air(double wavelength);
+
+	double refractive_index();
+
+	double bandgap_energy();
+
+private:
+
+};
+
+// Declaration of derived class Si
+
 class Si : public material {
 public:
 	Si();
@@ -59,8 +80,6 @@ public:
 	double refractive_index();
 
 	double bandgap_energy();
-
-	//double bandgap_energy_with_strain(); 
 
 private:
 
@@ -80,8 +99,6 @@ public:
 	double refractive_index();
 
 	double bandgap_energy();
-
-	//double bandgap_energy_with_strain(); 
 
 private:
 
@@ -218,6 +235,10 @@ public:
 	AlGaAs();
 	AlGaAs(double wavelength);
 
+	double refractive_index();
+
+	double bandgap_energy();
+
 	double refractive_index(double alfrac);
 
 	double bandgap_energy(double alfrac);
@@ -233,6 +254,10 @@ public:
 	AlInAs();
 	AlInAs(double wavelength);
 
+	double refractive_index();
+
+	double bandgap_energy();
+
 	double refractive_index(double alfrac);
 
 	double bandgap_energy(double alfrac);
@@ -247,6 +272,10 @@ class InGaAs : public material {
 public:
 	InGaAs();
 	InGaAs(double wavelength);
+
+	double refractive_index();
+
+	double bandgap_energy();
 
 	double refractive_index(double infrac);
 
@@ -266,6 +295,10 @@ public:
 	InGaAsP();
 	InGaAsP(double wavelength);
 
+	double refractive_index();
+
+	double bandgap_energy();
+
 	double refractive_index(double asfrac);
 
 	double bandgap_energy(double asfrac);
@@ -279,6 +312,10 @@ class AlInGaAs : public material {
 public:
 	AlInGaAs();
 	AlInGaAs(double wavelength);
+
+	double refractive_index();
+
+	double bandgap_energy();
 
 	double refractive_index(double asfrac);
 

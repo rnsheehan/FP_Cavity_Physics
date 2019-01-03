@@ -36,6 +36,8 @@ static const double PI_3 = ((4.0 / 3.0)*p); // pi / 3
 static const double PI_4 = (p); // pi / 4
 static const double PI_5 = ((4.0 / 5.0)*p); // pi / 5
 static const double PI_6 = ((2.0 / 3.0)*p); // pi / 6 
+static const double RAD_TO_DEG = (180.0/PI); // factor for converting radian to degrees
+static const double DEG_TO_RAD = (PI / 180.0); // factor for converting radian to degrees
 
 static const double SPEED_OF_LIGHT = (3.0e14); // Speed of light in microns per second
 static const double EPSILON = (8.85e-18); // Permittivity of free space in Farads per micron
