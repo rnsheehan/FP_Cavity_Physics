@@ -16,7 +16,8 @@ public:
 	virtual double refractive_index(void)=0; 
 	virtual double bandgap_energy(void)=0;
 
-	// Need to have non-pure virtual functions that can take a parameter
+	// Need to have non-pure virtual functions that can take a parameter to ensure access to RI functions in derived members that require 
+	// input parameters
 	virtual double refractive_index(double); 
 	virtual double bandgap_energy(double);
 

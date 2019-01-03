@@ -70,37 +70,40 @@ void testing::fresnel_values()
 {
 	// run some tests on the Fresnel equations
 
+	double wavelength = 1.55;
+
 	// Declarate some material objects
 	material *mat1;
 	material *mat2;
 
-	//Air smpl1;
-	//SiO2 smpl2;
+	/*Air smpl1;
+	SiO2 smpl2;*/
 
 	InP smpl1; 
 	AlN smpl2; 
 
-	mat1 = &smpl1;
+	/*mat1 = &smpl1;
 	mat2 = &smpl2;
 
-	double wavelength = 1.55;
-
 	mat1->set_wavelength(wavelength);
-	mat2->set_wavelength(wavelength);
+	mat2->set_wavelength(wavelength);*/
+
+	smpl1.set_wavelength(wavelength);  smpl2.set_wavelength(wavelength);
 
 	fresnel calc; 
 
-	calc.set_params(wavelength, mat1, mat2); 
+	calc.set_params(wavelength, smpl1.refractive_index(), smpl2.refractive_index()); 
 
+	std::cout << "Power Reflection using Fresnel Equations\nwavelength: " << calc.get_wl() << " um\n"; 
 	std::cout << "n1: " << calc.get_n1() << "\nn2: " << calc.get_n2() << "\n"; 
 	std::cout << "RI ratio: " << calc.get_n_ratio() << "\n";
 	std::cout << "Critical angle: " << calc.get_critical_angle()<<" rad, "<< calc.get_critical_angle()*RAD_TO_DEG << " deg\n";
 	std::cout << "Brewster angle: " << calc.get_brewster_angle() << " rad, " << calc.get_brewster_angle()*RAD_TO_DEG << " deg\n\n";
 
-	double angle = 27.0*DEG_TO_RAD; 
+	double angle = 45*DEG_TO_RAD; 
 
 	std::cout << "Angle of incidence: " << angle << " rad, "<< angle * RAD_TO_DEG<<" deg\n";
 	std::cout << "Angle of transmission: " << calc.transmission_angle(angle) << " rad, " << calc.transmission_angle(angle)*RAD_TO_DEG << " deg\n"; 
 	std::cout << "TE reflectance: " << calc.reflectance(angle, TE) << ", TE transmittance: " << calc.transmittance(angle, TE) <<"\n";
-	std::cout << "TM reflectance: " << calc.reflectance(angle, TM) << ", TM transmittance: "<< calc.transmittance(angle, TM) << "\n";
+	std::cout << "TM reflectance: " << calc.reflectance(angle, TM) << ", TM transmittance: "<< calc.transmittance(angle, TM) << "\n\n";
 }
