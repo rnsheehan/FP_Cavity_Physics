@@ -26,6 +26,9 @@
 #include <algorithm>
 
 // Constants
+static const int GEQ = 1;
+static const int LEQ = 2; 
+
 static const double EPS = (3.0e-12);
 
 static const double p = (atan(1.0)); // pi / 4

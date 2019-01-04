@@ -114,13 +114,13 @@ void testing::fp_test()
 
 	double incident_angle, cav_length, loss_fac, wl_start, wl_end;
 
-	incident_angle = 0.0; cav_length = 100; loss_fac = 0.0; wl_start = 1.0; wl_end = 2.0; 
+	incident_angle = 0.0; cav_length = 17; loss_fac = 0.0; wl_start = 1.4; wl_end = 1.6; 
 
 	/*InP smpl2;
 	AlN smpl1;*/
 
 	Air smpl1;
-	SiO2 smpl2;
+	Si smpl2;
 
 	material *mat1;
 	material *mat2;
@@ -129,5 +129,5 @@ void testing::fp_test()
 
 	fp_cavity etalon(incident_angle, cav_length, loss_fac, wl_start, wl_end, mat1, mat2);
 
-	etalon.compute_spectrum(); 
+	etalon.compute_spectrum(true); 
 }

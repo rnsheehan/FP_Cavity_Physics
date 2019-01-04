@@ -12,6 +12,8 @@ namespace useful_funcs{
 
 	bool valid_filename_length(const std::string &name);
 
+	bool test_gleq(int test, double &x, double &y); 
+
 	//void read_into_vector(std::string &filename, std::vector<double> &data, int &n_pts, bool loud = false); 
 
 	//double test_func( double (*f)(int, int), int a, int b); 

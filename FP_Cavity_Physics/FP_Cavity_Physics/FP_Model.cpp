@@ -29,7 +29,7 @@ void fp_cavity::set_params(double incident_angle, double cav_length, double loss
 			length = cav_length; 
 			alpha = loss_fac; 
 			wl1 = wl_start; wl2 = wl_end; // define endpoints of FP spectrum
-			nwl = 301; // specify num. subdivisions
+			nwl = 201; // specify num. subdivisions
 			dwl = (wl2 - wl1) / ((double)(nwl - 1)); // specify wl spacing 
 			mat1 = m1; 
 			mat2 = m2;
@@ -53,7 +53,7 @@ void fp_cavity::set_params(double incident_angle, double cav_length, double loss
 void fp_cavity::dispersion(double wavelength)
 {
 	try {
-		bool c1 = wavelength >= wl1 && wavelength <= wl2 ? true : false; 
+		bool c1 = useful_funcs::test_gleq(GEQ, wavelength, wl1) && useful_funcs::test_gleq(LEQ, wavelength, wl2) ? true : false;
 
 		if (c1) {
 			// update the material wavelength
@@ -84,7 +84,7 @@ void fp_cavity::dispersion(double wavelength)
 		else {
 			std::string reason;
 			reason = "Error: double fp_cavity::dispersion(double wavelength)\n";
-			reason += "Attempting to dispersion beyond allowed range\n"; 
+			reason += "Attempting to compute dispersion beyond allowed range\n"; 
 			throw std::invalid_argument(reason);
 		}
 	}
@@ -109,7 +109,7 @@ double fp_cavity::finesse(double wavelength)
 			return 0.0; 
 			std::string reason;
 			reason = "Error: double fp_cavity::finesse(double wavelength)\n";
-			if(!c1) reason += "Attempting to dispersion beyond allowed range\n";
+			if(!c1) reason += "Attempting to compute finesse beyond allowed range\n";
 			if (!c2) reason += "R is not yet defined\n"; 
 			throw std::invalid_argument(reason);
 		}
@@ -145,17 +145,17 @@ double fp_cavity::airy(double F)
 	}
 }
 
-double fp_cavity::reflection(double wavelength, bool loud)
+void fp_cavity::reflection(double wavelength, double &F, double &A, double &RFP, bool loud)
 {
 	// compute the FP cavity reflection
 	try {
-		bool c1 = wavelength >= wl1 && wavelength <= wl2 ? true : false;
+		bool c1 = useful_funcs::test_gleq(GEQ, wavelength, wl1) && useful_funcs::test_gleq(LEQ, wavelength, wl2) ? true : false;
 
 		if (c1) {
 			dispersion(wavelength); // define all parameters needed for the input wavelength
-			double F = finesse(wavelength); // compute the finesse
-			double A = airy(F); // compute the value of the Airy function
-			double RFP = F * A * phase; 
+			F = finesse(wavelength); // compute the finesse
+			A = airy(F); // compute the value of the Airy function
+			RFP = F * A * phase; 
 
 			if (loud) {
 				std::cout << "wavelength: " << wavelength << "\n";
@@ -164,14 +164,11 @@ double fp_cavity::reflection(double wavelength, bool loud)
 				std::cout << "F: " << F << " , A(F): " << A << "\n"; 
 				std::cout << "Cavity Reflectance: " << RFP << "\n\n"; 
 			}
-
-			return RFP; // compute the cavity reflectivity
 		}
 		else {
-			return 0.0; 
 			std::string reason;
-			reason = "Error: double fp_cavity::reflection(double wavelength)\n";
-			reason += "Attempting to dispersion beyond allowed range\n";
+			reason = "Error: void fp_cavity::reflection(double wavelength, double &F, double &A, double &RFP, bool loud)\n";
+			reason += "Attempting to compute reflection beyond allowed range\n";
 			throw std::invalid_argument(reason);
 		}
 	}
@@ -188,13 +185,20 @@ void fp_cavity::compute_spectrum(bool loud)
 	try {
 		if (params_defined) {
 			std::vector<double> lambda(nwl, 0.0); 
-			std::vector<double> refl(nwl, 0.0); 
+			std::vector<double> refl(nwl, 0.0);
+			std::vector<double> finevals(nwl, 0.0);
+			std::vector<double> airyvals(nwl, 0.0);
 
-			double wl = wl1; 
+			double wl = wl1;
+			double airy, fine, rfp;
 			for (int i = 0; i < nwl; i++) {
-				lambda[i] = wl; 
-				refl[i] = reflection(wl); 
-				if(loud && i%5 == 0) std::cout << wl << " , " << reflection(wl) << "\n"; 
+				
+				reflection(wl, fine, airy, rfp); 
+				
+				lambda[i] = wl; finevals[i] = fine; airyvals[i] = airy; refl[i] = rfp;
+				
+				if(loud && i%5 == 0) std::cout << wl << " , " << fine<< " , " << airy << " , " << rfp << "\n"; 
+				
 				wl += dwl; 
 			}
 
@@ -202,6 +206,12 @@ void fp_cavity::compute_spectrum(bool loud)
 
 			data_file = "wavelength.txt"; 
 			vecut::write_into_file(data_file, lambda);
+
+			data_file = "fp_finesse.txt";
+			vecut::write_into_file(data_file, finevals);
+
+			data_file = "fp_airy.txt";
+			vecut::write_into_file(data_file, airyvals);
 
 			data_file = "fp_reflectivity.txt";
 			vecut::write_into_file(data_file, refl);

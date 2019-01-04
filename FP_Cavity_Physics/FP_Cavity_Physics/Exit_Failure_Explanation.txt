@@ -1,7 +1,7 @@
 Program Exit Explanation
 
-Error occurred: Fri Jan  4 12:14:55 2019
+Error occurred: Fri Jan  4 15:11:34 2019
 
-Error: void fp_cavity::compute_spectrum()
-Device parameters not defined
+Error: double fp_cavity::dispersion(double wavelength)
+Attempting to compute dispersion beyond allowed range
 

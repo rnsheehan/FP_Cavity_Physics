@@ -84,6 +84,39 @@ bool useful_funcs::valid_filename_length(const std::string &name)
 	return static_cast<int>(name.length()) < MAX_PATH_LENGTH ? true : false;
 }
 
+bool useful_funcs::test_gleq(int test, double &x, double &y)
+{
+	// test x <= y || x >= y
+
+	try{
+
+		bool t1, t2, t3; 
+		
+		t1 = x == y ? true : false; // strict equality
+		t2 = fabs(x - y) < EPS ? true : false; // equality to within tolerance
+
+		if (test == GEQ) {
+			t3 = x > y ? true : false; // x > y
+		}
+		else if (test == LEQ) {
+			t3 = x < y ? true : false; // x < y
+		}
+		else {
+			return false; 
+			t3 = false; 
+			std::string reason; 
+			reason = "Error: bool useful_funcs::test_gleq(int &test, double &x, double &y)\n";
+			reason += "Incorrect code input into test\n"; 
+			throw std::runtime_error(reason); 
+		}
+
+		return t1 || t2 || t3; 
+	}
+	catch (std::runtime_error &e) {
+		std::cerr << e.what(); 
+	}
+}
+
 //void useful_funcs::read_into_vector(std::string &filename, std::vector<double> &data, int &n_pts, bool loud)
 //{
 //	// read data from a file into a vector

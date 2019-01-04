@@ -20,7 +20,7 @@ private:
 	void dispersion(double wavelength); // compute change in RI and R with wavelength
 	double finesse(double wavelength); // compute the FP cavity finesse
 	double airy(double F); // compute the FP cavity Airy function	
-	double reflection(double wavelength, bool loud = false); // compute the FP cavity reflection
+	void reflection(double wavelength, double &F, double &A, double &RFP, bool loud = false); // compute the FP cavity reflection
 
 private:
 	bool params_defined; 
