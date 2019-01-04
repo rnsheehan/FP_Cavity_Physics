@@ -129,5 +129,5 @@ void testing::fp_test()
 
 	fp_cavity etalon(incident_angle, cav_length, loss_fac, wl_start, wl_end, mat1, mat2);
 
-	etalon.dispersion(1.55); 
+	etalon.compute_spectrum(); 
 }

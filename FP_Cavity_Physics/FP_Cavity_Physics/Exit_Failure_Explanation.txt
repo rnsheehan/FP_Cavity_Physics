@@ -1,8 +1,7 @@
 Program Exit Explanation
 
-Error occurred: Thu Jan  3 11:55:07 2019
+Error occurred: Fri Jan  4 12:14:55 2019
 
-Attempting to compute RI outside of allowed range in InGaAs::refractive_index()
-wavelength = 1.550 (um)
-Allowed range for GaAs model is [ 1.15, 2.0 ]
+Error: void fp_cavity::compute_spectrum()
+Device parameters not defined
 

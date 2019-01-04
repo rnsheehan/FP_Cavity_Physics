@@ -14,9 +14,16 @@ public:
 
 	void set_params(double incident_angle, double cav_length, double loss_fac, double wl_start, double wl_end, material *m1, material *m2);
 
-	void dispersion(double wavelength); // compute change in RI and R with wavelength
-	
+	void compute_spectrum(bool loud = false); 
+
 private:
+	void dispersion(double wavelength); // compute change in RI and R with wavelength
+	double finesse(double wavelength); // compute the FP cavity finesse
+	double airy(double F); // compute the FP cavity Airy function	
+	double reflection(double wavelength, bool loud = false); // compute the FP cavity reflection
+
+private:
+	bool params_defined; 
 	int nwl; // number of wavelength subdivisions
 	double angle; // incident angle for light propagating into FP cavity
 	double length; // total length of FP cavity
@@ -27,7 +34,7 @@ private:
 	double n2; // RI of internal material
 	double r; // reflectivity n1 -> n2
 	double rpr; // reflectivity n2 -> n1
-	double R; // cavity reflectance
+	double R; // cavity mirror reflectance
 	double phase; // optical phase inside the cavity
 	double alpha; // intensity loss coefficient (gain if alpha < 0)
 
