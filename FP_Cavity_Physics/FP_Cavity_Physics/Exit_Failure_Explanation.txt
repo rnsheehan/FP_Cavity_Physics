@@ -1,7 +1,0 @@
-Program Exit Explanation
-
-Error occurred: Fri Jan  4 15:11:34 2019
-
-Error: double fp_cavity::dispersion(double wavelength)
-Attempting to compute dispersion beyond allowed range
-

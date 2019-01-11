@@ -17,10 +17,10 @@ public:
 	void compute_spectrum(bool ignore_dispersion = true, bool loud = false); 
 
 private:
-	void dispersion(double wavelength); // compute change in RI and R with wavelength
+	void dispersion(bool ignore_dispersion, double wavelength); // compute change in RI and R with wavelength
 	double finesse(double wavelength); // compute the FP cavity finesse
 	double airy(double F); // compute the FP cavity Airy function	
-	void reflection(double wavelength, double &F, double &A, double &RFP, bool loud = false); // compute the FP cavity reflection
+	void reflection(double wavelength, double &F, double &A, double &RFP, bool ignore_dispersion = true, bool loud = false); // compute the FP cavity reflection
 
 private:
 	bool params_defined; 
@@ -30,6 +30,7 @@ private:
 	double wl1; // initial wavelength for computing the FP spectrum
 	double wl2; // final wavelength for computing the FP spectrum
 	double dwl; // wavelength spacing
+	double wlc; // central wavelength
 	double n1; // RI of external material
 	double n2; // RI of internal material
 	double r; // reflectivity n1 -> n2

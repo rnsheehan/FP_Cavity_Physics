@@ -7,7 +7,7 @@ fp_cavity::fp_cavity()
 	// Default Constructor
 	nwl = 0; 
 	params_defined = false; 
-	wl1 = wl2 = dwl = n1 = n2 = length = alpha = R = r = rpr = phase = 0.0;
+	wl1 = wl2 = dwl = wlc = n1 = n2 = length = alpha = R = r = rpr = phase = 0.0;
 }
 
 fp_cavity::fp_cavity(double incident_angle, double cav_length, double loss_fac, double wl_start, double wl_end, material *m1, material *m2)
@@ -29,6 +29,7 @@ void fp_cavity::set_params(double incident_angle, double cav_length, double loss
 			length = cav_length; 
 			alpha = loss_fac; 
 			wl1 = wl_start; wl2 = wl_end; // define endpoints of FP spectrum
+			wlc = 0.5*(wl1 + wl2); // central wavelength is the average of the spectral endpoints
 			nwl = 201; // specify num. subdivisions
 			dwl = (wl2 - wl1) / ((double)(nwl - 1)); // specify wl spacing 
 			mat1 = m1; 
@@ -50,14 +51,23 @@ void fp_cavity::set_params(double incident_angle, double cav_length, double loss
 	}
 }
 
-void fp_cavity::dispersion(double wavelength)
+void fp_cavity::dispersion(bool ignore_dispersion, double wavelength)
 {
+	// ignore dispersion == true means that dispersion is ignored when computing the material RI
+	// wavelength is only accounted for when the phase term is computed
+
 	try {
 		bool c1 = useful_funcs::test_gleq(GEQ, wavelength, wl1) && useful_funcs::test_gleq(LEQ, wavelength, wl2) ? true : false;
 
 		if (c1) {
-			// update the material wavelength
-			mat1->set_wavelength(wavelength); mat2->set_wavelength(wavelength); 
+			if (ignore_dispersion) {
+				// update the material wavelength at the central wavelength only
+				mat1->set_wavelength(wlc); mat2->set_wavelength(wlc);
+			}
+			else {
+				// update the material wavelength
+				mat1->set_wavelength(wavelength); mat2->set_wavelength(wavelength);
+			}		
 
 			// update the local RI values
 			n1 = mat1->refractive_index(); n2 = mat2->refractive_index(); 
@@ -145,14 +155,14 @@ double fp_cavity::airy(double F)
 	}
 }
 
-void fp_cavity::reflection(double wavelength, double &F, double &A, double &RFP, bool loud)
+void fp_cavity::reflection(double wavelength, double &F, double &A, double &RFP, bool ignore_dispersion, bool loud)
 {
 	// compute the FP cavity reflection
 	try {
 		bool c1 = useful_funcs::test_gleq(GEQ, wavelength, wl1) && useful_funcs::test_gleq(LEQ, wavelength, wl2) ? true : false;
 
 		if (c1) {
-			dispersion(wavelength); // define all parameters needed for the input wavelength
+			dispersion(ignore_dispersion, wavelength); // define all parameters needed for the input wavelength
 			F = finesse(wavelength); // compute the finesse
 			A = airy(F); // compute the value of the Airy function
 			RFP = F * A * phase; 
@@ -187,11 +197,7 @@ void fp_cavity::compute_spectrum(bool ignore_dispersion, bool loud)
 		if (params_defined) {
 			std::vector<double> lambda(nwl, 0.0); 
 			std::vector<double> refl(nwl, 0.0);
-			std::vector<double> finevals(nwl, 0.0);
 			std::vector<double> airyvals(nwl, 0.0);
-			std::vector<double> phasevals(nwl, 0.0); 
-			std::vector<double> rvals(nwl, 0.0); 
-			std::vector<double> n2vals(nwl, 0.0); 
 
 			double wl = wl1;
 			double airy, fine, rfp;
@@ -199,7 +205,7 @@ void fp_cavity::compute_spectrum(bool ignore_dispersion, bool loud)
 				
 				reflection(wl, fine, airy, rfp); 
 				
-				lambda[i] = wl; finevals[i] = fine; airyvals[i] = airy; refl[i] = rfp; rvals[i] = R; phasevals[i] = phase; n2vals[i] = n2; 
+				lambda[i] = wl; airyvals[i] = airy; refl[i] = rfp;
 				
 				if(loud && i%5 == 0) std::cout << wl << " , " << fine<< " , " << airy << " , " << rfp << "\n"; 
 				
@@ -211,23 +217,11 @@ void fp_cavity::compute_spectrum(bool ignore_dispersion, bool loud)
 			data_file = "wavelength.txt"; 
 			vecut::write_into_file(data_file, lambda);
 
-			data_file = "fp_finesse.txt";
-			vecut::write_into_file(data_file, finevals);
-
 			data_file = "fp_airy.txt";
 			vecut::write_into_file(data_file, airyvals);
 
 			data_file = "fp_reflectivity.txt";
 			vecut::write_into_file(data_file, refl);
-
-			data_file = "facet_reflectivity.txt";
-			vecut::write_into_file(data_file, rvals);
-
-			data_file = "fp_phase.txt";
-			vecut::write_into_file(data_file, phasevals);
-
-			data_file = "fp_internal_n.txt";
-			vecut::write_into_file(data_file, n2vals);
 		}
 		else {
 			std::string reason;

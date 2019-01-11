@@ -114,7 +114,7 @@ void testing::fp_test()
 
 	double incident_angle, cav_length, loss_fac, wl_start, wl_end;
 
-	incident_angle = 0.0; cav_length = 10; loss_fac = 0.0; wl_start = 1.4; wl_end = 1.6; 
+	incident_angle = 0.0; cav_length = 13; loss_fac = 0.0; wl_start = 1.4; wl_end = 1.6; 
 
 	/*InP smpl2;
 	AlN smpl1;*/
