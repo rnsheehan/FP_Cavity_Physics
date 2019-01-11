@@ -62,9 +62,9 @@ void fp_cavity::dispersion(double wavelength)
 			// update the local RI values
 			n1 = mat1->refractive_index(); n2 = mat2->refractive_index(); 
 
-			// the phase value is actually the argument of the sin function, however, taking the sin^{2} value for the sake of computational efficiency
-			phase = template_funcs::DSQR( sin( (Two_PI * n2 * length) / wavelength ) ); 
-			
+			// the phase value is actually the argument of the sin function, however, taking the sin^{2} value for the sake of computational efficiency	
+			phase = template_funcs::DSQR( sin( (Two_PI * n2 * length) / wavelength ) );
+
 			// Compute the wavelength dependent mirror reflectivity
 			fresnel calc; 
 
@@ -178,9 +178,10 @@ void fp_cavity::reflection(double wavelength, double &F, double &A, double &RFP,
 	}
 }
 
-void fp_cavity::compute_spectrum(bool loud)
+void fp_cavity::compute_spectrum(bool ignore_dispersion, bool loud)
 {
 	// compute the FP cavity reflection spectrum
+	// ignore dispersion == true means that the refractive index variation due to wavelength is not included in the calculation
 
 	try {
 		if (params_defined) {
@@ -188,6 +189,9 @@ void fp_cavity::compute_spectrum(bool loud)
 			std::vector<double> refl(nwl, 0.0);
 			std::vector<double> finevals(nwl, 0.0);
 			std::vector<double> airyvals(nwl, 0.0);
+			std::vector<double> phasevals(nwl, 0.0); 
+			std::vector<double> rvals(nwl, 0.0); 
+			std::vector<double> n2vals(nwl, 0.0); 
 
 			double wl = wl1;
 			double airy, fine, rfp;
@@ -195,7 +199,7 @@ void fp_cavity::compute_spectrum(bool loud)
 				
 				reflection(wl, fine, airy, rfp); 
 				
-				lambda[i] = wl; finevals[i] = fine; airyvals[i] = airy; refl[i] = rfp;
+				lambda[i] = wl; finevals[i] = fine; airyvals[i] = airy; refl[i] = rfp; rvals[i] = R; phasevals[i] = phase; n2vals[i] = n2; 
 				
 				if(loud && i%5 == 0) std::cout << wl << " , " << fine<< " , " << airy << " , " << rfp << "\n"; 
 				
@@ -215,6 +219,15 @@ void fp_cavity::compute_spectrum(bool loud)
 
 			data_file = "fp_reflectivity.txt";
 			vecut::write_into_file(data_file, refl);
+
+			data_file = "facet_reflectivity.txt";
+			vecut::write_into_file(data_file, rvals);
+
+			data_file = "fp_phase.txt";
+			vecut::write_into_file(data_file, phasevals);
+
+			data_file = "fp_internal_n.txt";
+			vecut::write_into_file(data_file, n2vals);
 		}
 		else {
 			std::string reason;

@@ -14,7 +14,7 @@ public:
 
 	void set_params(double incident_angle, double cav_length, double loss_fac, double wl_start, double wl_end, material *m1, material *m2);
 
-	void compute_spectrum(bool loud = false); 
+	void compute_spectrum(bool ignore_dispersion = true, bool loud = false); 
 
 private:
 	void dispersion(double wavelength); // compute change in RI and R with wavelength
