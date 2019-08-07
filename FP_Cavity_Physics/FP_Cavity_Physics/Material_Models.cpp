@@ -146,6 +146,8 @@ double material::data_based_ri(std::string &filename)
 
 			interpolation::polint(waves, rindexes, wavelength, ri_val, delta_ri_val);
 
+			wavelength /= 1000.0; // convert wavelength from units of nm to units of um
+
 			return ri_val;			
 		}
 		else {

@@ -250,7 +250,7 @@ double Si::refractive_index()
 			std::string reason;
 			reason = "Attempting to compute RI outside of allowed range in Si::refractive_index()\n";
 			reason += "wavelength = " + template_funcs::toString(wavelength, 3) + " (um)\n";
-			reason += "Allowed range for GaAs model is [ 0.197, 2.5 ]\n";
+			reason += "Allowed range for Si model is [ 0.197, 2.5 ]\n";
 			throw std::range_error(reason);
 		}
 	}
@@ -930,6 +930,72 @@ double InAs::refractive_index()
 }
 
 double InAs::bandgap_energy()
+{
+	// model for the band-gap energy of the material InAs
+	// source: http://www.ioffe.ru/SVA/NSM/Semicond/InAs/index.html
+	try {
+
+		if (get_temperature() > 0.0 && get_temperature() < 700.0) {
+			return 0.355;
+		}
+		else {
+			std::string reason;
+			reason = "Attempting to compute Eg outside of allowed range in InAs::bandgap_energy()\n";
+			reason += "temperature = " + template_funcs::toString(get_temperature(), 3) + " (um)\n";
+			reason += "Allowed range for InAs model is [ 0, 700 ]\n";
+			throw std::range_error(reason);
+		}
+	}
+	catch (std::range_error &e) {
+		useful_funcs::exit_failure_output(e.what());
+		exit(EXIT_FAILURE);
+	}
+}
+
+// Definition of class SiN
+SiN::SiN()
+{
+	// Default Constructor
+}
+
+SiN::SiN(double wavelength)
+{
+	set_wavelength(wavelength);
+}
+
+double SiN::refractive_index()
+{
+	// Refractive Index of SiN
+	// source:``Expanding the silicon photonics portfolio with silicon nitride photonic integrated circuits'', JLT, 35 (4), 2017
+
+	try {
+		// Model is only valid on certain wavelength range
+
+		if (wavelength > 0.414 && wavelength < 1.682) {
+
+			std::string ri_file = "RI_Data\\SiN_LPCVD.txt";
+
+			double ret_val = data_based_ri(ri_file);
+
+			return ret_val;
+		}
+		else {
+			std::string reason;
+			reason = "Attempting to compute RI outside of allowed range in SiN::refractive_index()\n";
+			reason += "wavelength = " + template_funcs::toString(wavelength, 3) + " (um)\n";
+			reason += "Allowed range for SiN model is [ 0.414, 1.682 ]\n";
+			throw std::range_error(reason);
+		}
+
+	}
+	catch (std::range_error &e) {
+		useful_funcs::exit_failure_output(e.what());
+		exit(EXIT_FAILURE);
+	}
+
+}
+
+double SiN::bandgap_energy()
 {
 	// model for the band-gap energy of the material InAs
 	// source: http://www.ioffe.ru/SVA/NSM/Semicond/InAs/index.html
